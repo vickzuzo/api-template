@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo \"MESSAGE::::::: RUNNING PRE-COMMIT\"
+echo \"MESSAGE::::::: CHECKING CODE STYLE\"
+yarn lint
+echo \"MESSAGE::::::: FIXING CODE STYLE\"
+yarn lint:fix
+echo \"MESSAGE::::::: ENFORCING BRANCH RULES\"
+yarn enforce-branch-name '(hotfix|bugfix|update|feature|feat|fix)/.+' --ignore '(staging|master|develop)'
+echo \"MESSAGE::::::: RUNNING CODE CLEANUP\"
+yarn prettier:fix
+yarn prettier:ci
+echo \"MESSAGE::::::: CLEANUP PRE-COMMIT\"
+git add .
+echo \"MESSAGE::::::: DONE PRE-COMMIT\"
